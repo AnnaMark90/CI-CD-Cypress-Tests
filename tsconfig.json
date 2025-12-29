@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "module": "Node16",
+    "moduleResolution": "node16",
+    "target": "es2016",
+    "types": ["cypress"],
+    "lib": ["dom", "es6"],
+    "sourceMap": true,
+    "declaration": true,
+    "declarationMap": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+    "strict": true,
+    "jsx": "react-jsx",
+    "verbatimModuleSyntax": false,
+    "isolatedModules": true,
+    "noUncheckedSideEffectImports": true,
+    "moduleDetection": "force",
+    "skipLibCheck": true
+  }
+}
