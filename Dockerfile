@@ -1,8 +1,7 @@
-FROM jenkins/jenkins:lts
+FROM cypress/included:12.0.0
 
-USER root
-RUN apt-get update && \
-    apt-get install -y docker.io && \
-    usermod -aG docker jenkins
+WORKDIR /app
+COPY . .
+RUN npm install
 
-USER jenkins
+CMD ["npx", "cypress", "run"]

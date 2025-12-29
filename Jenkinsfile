@@ -9,7 +9,9 @@ pipeline {
     stages {
         stage('Build Cypress image') {
             steps {
-                sh 'docker build -t cypress-tests .'
+                    dir("${env.WORKSPACE}") {
+                    sh 'docker build -t cypress-tests .'
+                }
             }
         }
 
