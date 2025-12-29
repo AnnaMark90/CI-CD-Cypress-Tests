@@ -1,10 +1,9 @@
-FROM cypress/included:15.7.0
+FROM jenkins/jenkins:lts
 
-WORKDIR /e2e
+USER root
 
-COPY package*.json ./
-RUN npm ci
+RUN apt-get update && \
+    apt-get install -y docker.io && \
+    rm -rf /var/lib/apt/lists/*
 
-COPY . .
-
-ENTRYPOINT ["npx", "cypress", "run", "--browser", "chrome"]
+USER jenkins
