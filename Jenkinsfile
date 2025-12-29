@@ -1,47 +1,26 @@
 pipeline {
-    agent {
-        docker {
-            image 'hannamarkouskaya/my-cypress-tests:latest'
-            args '-v /dev/shm:/dev/shm:rw'
-        }
-    }
-    
-    environment {
-        CYPRESS_baseUrl = 'https://www.saucedemo.com/inventory.html'   
-    }
-    
+    agent any
+
     stages {
-        stage('Cypress E2E Tests') {
+        stage('Build Cypress image') {
             steps {
-                sh '''
-                    echo "Запуск Cypress тестов..."
-                    npx cypress run --browser chrome --headed=false
-                    echo "Тесты завершены"
-                '''
+                sh 'docker build -t cypress-tests .'
+            }
+        }
+
+        stage('Run Cypress tests') {
+            steps {
+                sh 'docker run --rm cypress-tests'
             }
         }
     }
-    
+
     post {
-        always {
-            publishHTML([
-                allowMissing: true,
-                alwaysLinkToLastBuild: true,
-                keepAll: true,
-                reportDir: 'cypress/reports',
-                reportFiles: 'index.html',
-                reportName: 'Cypress Dashboard'
-            ])
-            archiveArtifacts(
-                artifacts: 'cypress/videos/**,cypress/screenshots/**',
-                allowEmptyArchive: true
-            )
-        }
         success {
-            echo 'Тесты прошли'
+            echo '✅ Тесты прошли'
         }
         failure {
-            echo 'Тесты упали'
+            echo '❌ Тесты упали'
         }
     }
 }
