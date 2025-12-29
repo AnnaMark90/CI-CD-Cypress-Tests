@@ -1,0 +1,10 @@
+name: Cypress Tests
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Run Cypress Docker
+      run: docker run --rm hannamarkouskaya/my-cypress-tests:latest
