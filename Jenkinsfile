@@ -1,33 +1,25 @@
 pipeline {
-    agent {
-    docker {
-        image 'docker:24.0-dind'
-        args '--privileged -v /var/run/docker.sock:/var/run/docker.sock'
-    }
-}
-
+    agent any
     stages {
+        stage('Prepare workspace') {
+            steps {
+                sh '''
+                    # Убедимся, что Dockerfile и проект находятся в рабочем каталоге
+                    cp -r /var/jenkins_home/workspace/cypress-ci-cd/. ${WORKSPACE}/
+                '''
+            }
+        }
         stage('Build Cypress image') {
             steps {
-                    dir("${env.WORKSPACE}") {
+                dir("${env.WORKSPACE}") {
                     sh 'docker build -t cypress-tests .'
                 }
             }
         }
-
         stage('Run Cypress tests') {
             steps {
                 sh 'docker run --rm cypress-tests'
             }
-        }
-    }
-
-    post {
-        success {
-            echo '✅ Тесты прошли'
-        }
-        failure {
-            echo '❌ Тесты упали'
         }
     }
 }
